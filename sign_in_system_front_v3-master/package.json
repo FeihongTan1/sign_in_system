@@ -1,0 +1,23 @@
+{
+  "name": "sign_in_system_front_v3",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "serve": "vue-cli-service serve",
+    "build": "vue-cli-service build",
+    "lint": "vue-cli-service lint",
+    "inspect": "vue-cli-service inspect"
+  },
+  "dependencies": {},
+  "devDependencies": {
+    "@vue/cli-plugin-babel": "^3.0.1",
+    "@vue/cli-plugin-eslint": "^3.0.1",
+    "@vue/cli-service": "^3.0.1",
+    "vue-template-compiler": "^2.5.17",
+    "axios": "^0.18.0",
+    "element-ui": "latest",
+    "vue": "latest",
+    "vue-router": "latest",
+    "vuex": "latest"
+  }
+}

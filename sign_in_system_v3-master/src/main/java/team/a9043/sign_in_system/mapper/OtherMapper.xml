@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="team.a9043.sign_in_system.mapper.OtherMapper">
+    <resultMap id="SisCourse"
+               type="team.a9043.sign_in_system.pojo.SisCourse">
+        <id column="sc_id" jdbcType="VARCHAR" property="scId"/>
+        <result column="sc_act_size" jdbcType="INTEGER" property="scActSize"/>
+        <result column="sc_att_rate" jdbcType="DECIMAL" property="scAttRate"/>
+        <result column="sc_grade" jdbcType="INTEGER" property="scGrade"/>
+        <result column="sc_max_size" jdbcType="INTEGER" property="scMaxSize"/>
+        <result column="sc_name" jdbcType="VARCHAR" property="scName"/>
+        <result column="sc_need_monitor" jdbcType="BIT"
+                property="scNeedMonitor"/>
+        <result column="su_id" jdbcType="VARCHAR" property="suId"/>
+        <collection property="sisScheduleList"
+                    ofType="team.a9043.sign_in_system.pojo.SisSchedule">
+            <id column="ss_id" jdbcType="INTEGER" property="ssId"/>
+            <result column="ss_day_of_week" jdbcType="INTEGER"
+                    property="ssDayOfWeek"/>
+            <result column="ss_end_time" jdbcType="INTEGER"
+                    property="ssEndTime"/>
+            <result column="ss_end_week" jdbcType="INTEGER"
+                    property="ssEndWeek"/>
+            <result column="ss_fortnight" jdbcType="INTEGER"
+                    property="ssFortnight"/>
+            <result column="ss_start_time" jdbcType="INTEGER"
+                    property="ssStartTime"/>
+            <result column="ss_start_week" jdbcType="INTEGER"
+                    property="ssStartWeek"/>
+            <result column="ss_year_et_term" jdbcType="VARCHAR"
+                    property="ssYearEtTerm"/>
+            <result column="s_sc_id" jdbcType="VARCHAR" property="scId"/>
+            <result column="ss_suspension" jdbcType="VARCHAR"
+                    property="ssSuspension"/>
+            <result column="ss_room" jdbcType="VARCHAR" property="ssRoom"/>
+            <result column="sl_id" jdbcType="INTEGER" property="slId"/>
+        </collection>
+        <collection property="sisJoinCourseList"
+                    ofType="team.a9043.sign_in_system.pojo.SisJoinCourse">
+            <id column="j2_sjc_id" jdbcType="INTEGER" property="sjcId"/>
+            <result column="j2_join_course_type" jdbcType="INTEGER"
+                    property="joinCourseType"/>
+            <result column="j2_sc_id" jdbcType="VARCHAR" property="scId"/>
+            <result column="j2_su_id" jdbcType="VARCHAR" property="suId"/>
+            <association property="sisUser"
+                         javaType="team.a9043.sign_in_system.pojo.SisUser">
+                <id column="tea_su_id" jdbcType="VARCHAR" property="suId"/>
+                <result column="tea_su_authorities_str" jdbcType="VARCHAR"
+                        property="suAuthoritiesStr"/>
+                <result column="tea_su_name" jdbcType="VARCHAR"
+                        property="suName"/>
+                <result column="tea_su_openid" jdbcType="VARCHAR"
+                        property="suOpenid"/>
+            </association>
+        </collection>
+    </resultMap>
+    <select id="selectStuCozTable" resultMap="SisCourse">
+        select sis_course.sc_id,
+        sc_act_size,
+        sc_att_rate,
+        sc_grade,
+        sc_max_size,
+        sc_name,
+        sc_need_monitor,
+        sis_course.su_id,
+        ss_id,
+        ss_day_of_week,
+        ss_end_time,
+        ss_end_week,
+        ss_fortnight,
+        ss_start_time,
+        ss_start_week,
+        ss_year_et_term,
+        sis_schedule.sc_id s_sc_id,
+        ss_suspension,
+        ss_room,
+        sl_id,
+        j2.sjc_id j2_sjc_id,
+        j2.join_course_type j2_join_course_type,
+        j2.sc_id j2_sc_id,
+        j2.su_id j2_su_id,
+        sis_user.su_id tea_su_id,
+        su_authorities_str tea_su_authorities_str,
+        su_name tea_su_name,
+        su_openid tea_su_openid
+        from sys_sin_sys_v3.sis_join_course
+        join sys_sin_sys_v3.sis_course
+        on sis_join_course.sc_id = sis_course.sc_id
+        left join sys_sin_sys_v3.sis_schedule on sis_course.sc_id =
+        sis_schedule.sc_id
+        left join sys_sin_sys_v3.sis_join_course j2
+        on sis_course.sc_id =
+        j2.sc_id
+        <if test="isStu == true">
+            and
+            j2.join_course_type = 1
+        </if>
+        join sys_sin_sys_v3.sis_user on j2.su_id =
+        sis_user.su_id
+        where sis_join_course.su_id = #{suId}
+    </select>
+</mapper>
